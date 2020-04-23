@@ -46,6 +46,9 @@ const controller = {
     */
     getDelete: function (req, res) {
         // your code here
+        User.deleteOne(req, function(result){
+            res.render('home', {students :result});
+        });
     }
 
 }

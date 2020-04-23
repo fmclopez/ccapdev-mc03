@@ -8,6 +8,9 @@ var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
     // your code here
+    _id: mongoose.Schema.Types.ObjectId,
+    name: String,
+    number: Number,
 });
 
 module.exports = mongoose.model('User', UserSchema);
