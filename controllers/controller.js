@@ -14,7 +14,14 @@ const controller = {
     */
     getIndex: function(req, res) {
         // your code here
-        res.render('home'); // This is to load the page initially
+        db.findMany(User, {}, '', function(result) {  //select ALL 
+            res.render('home', {
+                users: result
+            }); // This is to load the page initially
+        });
+
+        //res.render() displays the html content 
+        //can add conditions and information inside {}
     },
 
     /*
@@ -26,6 +33,9 @@ const controller = {
     */
     getCheckNumber: function(req, res) {
         // your code here
+        db.findOne(User, {number:req.query.number}, function(result){
+           
+        });
     },
 
     /*
@@ -36,6 +46,32 @@ const controller = {
     */
     getAdd: function(req, res) {
         // your code here
+
+        //.body -> if POST and bodyParser,urlencoded cuz difficult to find if not parse 
+        //.param -> if GET and included in the url itself
+        var user = {
+            name: req.query.name,
+            number: req.query.number
+        } 
+        console.log(user.name);
+        console.log(user.number);
+
+        db.insertOne(User,user, function(result){
+            if (result) {
+                res.render('partials/card', {
+                    name: user.name,
+                    number: user.number
+                }, function(err, html) {
+                    res.send(html);  //put result into an html file to be appended when passed to home.hbs
+                });
+                console.log("Successfully added contact!");
+                console.log(result);
+            }
+            else{
+                res.send(null); 
+            }
+            //res.send() returns result of database pr etc to "caller"
+        });
     },
 
     /*
@@ -46,8 +82,8 @@ const controller = {
     */
     getDelete: function (req, res) {
         // your code here
-        User.deleteOne(req, function(result){
-            res.render('home', {students :result});
+        db.deleteOne(req.body.id, function(result){
+            res.render('home');
         });
     }
 

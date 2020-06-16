@@ -32,6 +32,42 @@ $(document).ready(function () {
     */
     $('#submit').click(function () {
         // your code here
+        if(!$('#name').val() || !$('#number').val()){
+            $('#error').text('Please fill-up missing fields!');
+            if(!$('#name').val()){
+                $('#name').css({"background-color": "red"});
+            }
+            if(!$('#number').val()){
+                $('#number').css({"background-color": "red"});
+            }
+        }
+        else{
+            var name = $('#name').val();
+            var number = $('#number').val();
+            console.log(name);
+            console.log(number);
+
+            var newContact= {
+               name: name,
+               number: number,
+            };
+
+        $.get('/add', newContact, function(data, status) {
+                //console.log(data);
+                
+                //console.log() in js -> chrome 
+                //console.log() in node -> cmd prmpt
+                if(data != null) {
+                 $('#error').text('');
+                   $('#contacts').append(data);
+                   console.log('hello');
+                    $('#name').val('');
+                    $('#number').val('')
+                    $('#name').css({"background-color": "#E3E3E3"});
+                    $('#number').css({"background-color": "#E3E3E3"});
+                }
+             });
+        }
     });
 
     /*
@@ -43,6 +79,9 @@ $(document).ready(function () {
     */
     $('#contacts').on('click', '.remove', function () {
         // your code here
+        $.get('/delete', { name: name }, function(data, status) {
+            console.log(data);
+        });
     });
 
-})
+});
