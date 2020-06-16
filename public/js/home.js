@@ -79,8 +79,21 @@ $(document).ready(function () {
     */
     $('#contacts').on('click', '.remove', function () {
         // your code here
-        $.get('/delete', { name: name }, function(data, status) {
+
+        //class before x -> prev()
+        //classes inside that prev class -> children() 
+        var contact = $(this).prev().children()[1];
+        var number = { //to be called in req.query create object first
+            number : contact.innerHTML //innerHTML get directly... not function
+        }
+        console.log(number);
+        var box = $(this).parent() //place outside of get req this pertains to x 
+        $.get('/delete', number, function(data, status) {
             console.log(data);
+            console.log(this); //this here would be the get req itself NOT x
+            if(data){
+                box.remove();
+            }
         });
     });
 

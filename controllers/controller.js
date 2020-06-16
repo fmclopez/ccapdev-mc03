@@ -82,8 +82,8 @@ const controller = {
     */
     getDelete: function (req, res) {
         // your code here
-        db.deleteOne(req.body.id, function(result){
-            res.render('home');
+        db.deleteOne(User, {number : req.query.number}, function(result){
+            res.send(result)
         });
     }
 
