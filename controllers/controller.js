@@ -33,8 +33,14 @@ const controller = {
     */
     getCheckNumber: function(req, res) {
         // your code here
-        db.findOne(User, {number:req.query.number}, function(result){
-           
+        db.findOne(User, {number:req.query.number}, '',function(result){
+           if(result==null){
+               console.log("res: "+ result);
+              res.send(result); //sends null 
+           }else{
+            console.log("res: "+ result);
+            res.send(result);
+           }
         });
     },
 

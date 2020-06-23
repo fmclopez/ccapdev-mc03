@@ -17,6 +17,34 @@ $(document).ready(function () {
     */
     $('#number').keyup(function () {
         // your code here
+        console.log('press');
+        var id = $('#number').val();
+        
+        if(!id){
+            $('#error').text('Please input contact number!');
+            $('#number').css({"background-color": "red"});
+        }
+        else{
+            var num = {
+                number: id
+            }
+    
+            $.get('/getCheckNumber', num, function(data, status){
+                console.log(data);
+                if(data != ''){ //res.send(null) sends empty string ->> check in inspect (chrome) to match it
+                    console.log("HEY");
+                    $('#error').text('Number already registered');
+                    $('#submit').attr("disabled", true); //disable submit button...
+                    $('#number').css({"background-color": "red"});
+                }
+                else{
+                    $('#number').css({"background-color": "#E3E3E3"});
+                    $('#error').text('');
+                    $('#submit').removeAttr("disabled");
+                }
+            });
+        }
+
     });
 
     /*
@@ -57,7 +85,7 @@ $(document).ready(function () {
                 
                 //console.log() in js -> chrome 
                 //console.log() in node -> cmd prmpt
-                if(data != null) {
+                if(data != '') {
                  $('#error').text('');
                    $('#contacts').append(data);
                    console.log('hello');
